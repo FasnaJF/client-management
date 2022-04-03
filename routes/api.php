@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/register', 'HomeController@showRegistrationForm');
+Route::post('/register', 'HomeController@registerUser');
+Route::get('/login', 'HomeController@showLoginForm');
+Route::post('/login', 'HomeController@loginUser')->name('login');
+Route::post('/logout', 'HomeController@logout')->name('logout');
+
+Route::group(['middleware' => IsAdmin::class], function () {
+    Route::get('/dashboard/{id}', 'DashboardController@index');
+    Route::post('/createClient', 'DashboardController@createClient');
+    Route::post('/updateClient', 'DashboardController@updateClient');
+    Route::delete('/deleteClient/{id}', 'DashboardController@deleteClient');
 });
