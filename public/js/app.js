@@ -5630,8 +5630,6 @@ var ClientsList = /*#__PURE__*/function (_Component) {
             }
           });
         } else if (response.data.status === 500) {
-          console.log(response.data.errors.first_name);
-
           _this.setState({
             firstNameEditErrorMessage: response.data.errors.first_name ? response.data.errors.first_name[0] : '',
             surnameEditErrorMessage: response.data.errors.surname ? response.data.errors.surname[0] : '',
@@ -5768,7 +5766,6 @@ var ClientsList = /*#__PURE__*/function (_Component) {
           clients = _this$state.clients;
       var clientDetails = [];
       var userData = JSON.parse(localStorage.getItem('userData'));
-      console.log(this.state.editClientDetails);
 
       if (clients.length > 0) {
         clientDetails = clients.map(function (client) {

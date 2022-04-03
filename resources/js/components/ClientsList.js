@@ -194,7 +194,7 @@ export default class ClientsList extends Component {
                     editClientDetails: {first_name, surname, email, profile_picture},
                 });
             } else if (response.data.status === 500) {
-                console.log(response.data.errors.first_name);
+
                 this.setState({
                     firstNameEditErrorMessage: response.data.errors.first_name ? response.data.errors.first_name[0] : '',
                     surnameEditErrorMessage: response.data.errors.surname ? response.data.errors.surname[0] : '',
@@ -247,7 +247,7 @@ export default class ClientsList extends Component {
         const {newClientDetails, noDataFound, clients} = this.state;
         let clientDetails = [];
         const userData = JSON.parse(localStorage.getItem('userData'));
-        console.log(this.state.editClientDetails);
+
         if (clients.length > 0) {
             clientDetails = clients.map((client) => {
                 return (
