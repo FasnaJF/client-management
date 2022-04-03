@@ -20,7 +20,7 @@ Route::get('/login', 'HomeController@showLoginForm');
 Route::post('/login', 'HomeController@loginUser')->name('login');
 Route::post('/logout', 'HomeController@logout')->name('logout');
 
-Route::group(['middleware' => IsAdmin::class], function () {
+Route::group(['middleware' => \App\Http\Middleware\IsAdmin::class], function () {
     Route::get('/dashboard/{id}', 'DashboardController@index');
     Route::post('/createClient', 'DashboardController@createClient');
     Route::post('/updateClient', 'DashboardController@updateClient');

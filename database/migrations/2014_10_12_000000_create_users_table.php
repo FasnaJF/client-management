@@ -14,7 +14,6 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            Schema::create('users', function (Blueprint $table) {
                 $table->id();
                 $table->string('first_name');
                 $table->string('surname');
@@ -23,7 +22,6 @@ class CreateUsersTable extends Migration
                 $table->string('api_token')->default(null)->nullable();
                 $table->string('admin_level')->default(1);
                 $table->timestamps();
-            });
         });
     }
 
