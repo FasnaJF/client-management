@@ -18,9 +18,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'surname',
         'email',
         'password',
+        'admin_level',
+        'api_token'
     ];
 
     /**
@@ -41,4 +44,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Check is user admin
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return !! $this->admin_level;
+    }
+
+    public function clients(){
+        return $this->hasMany(Client::class, 'admin_id', 'id');
+    }
 }
