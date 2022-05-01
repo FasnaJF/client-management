@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Routing\Controller as BaseController;
 
-class HomeController extends Controller
+
+class AdminController extends BaseController
 {
 
     public function __construct()
@@ -23,7 +25,8 @@ class HomeController extends Controller
         $validation = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
-            'email' => ['required_with:confirm_email',
+            'email' => [
+                'required_with:confirm_email',
                 'same:confirm_email',
                 'string',
                 'email',
@@ -45,30 +48,29 @@ class HomeController extends Controller
             'password' => Hash::make($request->password)
         ];
 
-        $user = User::create($userDetails);
+        $user = Admin::create($userDetails);
 
         if ($user) {
             return json_encode(["status" => 200, "message" => "You have registered successfully", "data" => $user]);
-
         } else {
             return json_encode(["status" => 500, "message" => "failed to register"]);
         }
-
-
     }
 
     public function loginUser(Request $request)
     {
-
-        $validation = Validator::make($request->all(), [
+        $validation = Validator::make(
+            $request->all(),
+            [
                 'email' => 'required|email',
-                'password' => 'required']
+                'password' => 'required'
+            ]
         );
         if ($validation->fails()) {
             return json_encode(["status" => 500, "errors" => $validation->errors()]);
         }
 
-        $user = User::where('email', $request->email)->first();
+        $user = Admin::where('email', $request->email)->first();
         if (!$user) {
             return json_encode(["status" => 500, "message" => "Unable to login. Email doesn't exist."]);
         }
@@ -80,11 +82,9 @@ class HomeController extends Controller
 
         if (Auth::attempt($credentials)) {
             return json_encode(["status" => 200, "message" => "You have logged in successfully", "data" => $user]);
-
         } else {
             return json_encode(["status" => 500, "message" => "Unable to login. Incorrect password."]);
         }
-
     }
 
     public function logout(Request $request)
@@ -95,6 +95,4 @@ class HomeController extends Controller
             return response()->json([], 204);
         }
     }
-
-
 }

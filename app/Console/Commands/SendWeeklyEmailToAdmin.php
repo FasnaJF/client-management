@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Mail\EmailClientList;
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
@@ -40,8 +40,8 @@ class SendWeeklyEmailToAdmin extends Command
      */
     public function handle()
     {
-        $admins = User::all();
-        foreach ($admins as $admin){
+        $admins = Admin::all();
+        foreach ($admins as $admin) {
             Mail::to($admin)->send(new EmailClientList($admin));
         }
     }

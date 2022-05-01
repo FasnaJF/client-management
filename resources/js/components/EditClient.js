@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input,} from "reactstrap";
+import React, { Component } from "react";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input, } from "reactstrap";
 
 export default class EditClient extends Component {
     render() {
@@ -15,28 +15,28 @@ export default class EditClient extends Component {
                         <FormGroup>
                             <Label for="first_name">First Name</Label>
                             <Input id="first_name" name="first_name"
-                                   value={this.props.editClientDetails.first_name}
-                                   onChange={this.props.onChangeEditClientHandler}/>
+                                value={this.props.editClientDetails.first_name}
+                                onChange={this.props.onChangeEditClientHandler} />
                             <span className="text-danger">{this.props.firstNameEditErrorMessage}</span>
                         </FormGroup>
                         <FormGroup>
                             <Label for="surname">Surname</Label>
                             <Input id="surname" name="surname"
-                                   value={this.props.editClientDetails.surname}
-                                   onChange={this.props.onChangeEditClientHandler}/>
+                                value={this.props.editClientDetails.surname}
+                                onChange={this.props.onChangeEditClientHandler} />
                             <span className="text-danger">{this.props.surnameEditErrorMessage}</span>
                         </FormGroup>
                         <FormGroup>
                             <Label for="email">Email</Label>
                             <Input id="email" name="email" type="email"
-                                   value={this.props.editClientDetails.email}
-                                   onChange={this.props.onChangeEditClientHandler}/>
+                                value={this.props.editClientDetails.email}
+                                onChange={this.props.onChangeEditClientHandler} />
                             <span className="text-danger">{this.props.emailEditErrorMessage}</span>
                         </FormGroup>
                         <FormGroup>
                             <Label for="profile_picture">Profile Picture</Label>
                             <Input type="file" id="profile_picture" name="profile_picture"
-                                   onChange={this.props.onChangeEditClientHandler}/>
+                                onChange={this.props.onChangeEditClientHandler} />
                             <span className="text-danger">{this.props.imageEditErrorMessage}</span>
                         </FormGroup>
                     </ModalBody>

@@ -1,10 +1,10 @@
 import axios from 'axios'
-import React, {Component} from 'react'
-import {Navigate} from 'react-router-dom'
-import {Table, Button} from "reactstrap";
+import React, { Component } from 'react'
+import { Navigate } from 'react-router-dom'
+import { Table, Button } from "reactstrap";
 import CreateClient from './CreateClient'
 import EditClient from './EditClient'
-import "../../css/dashboard.css";
+import "../../css/client.css";
 
 
 export default class ClientsList extends Component {
@@ -52,10 +52,10 @@ export default class ClientsList extends Component {
         this._isMounted = true;
         const login = localStorage.getItem('isLoggedIn');
         if (!login) {
-            return <Navigate to="/login"/>;
+            return <Navigate to="/login" />;
         }
         const userData = JSON.parse(localStorage.getItem('userData'));
-        axios.get(`/api/dashboard/` + userData.id, {
+        axios.get(`/api/client/` + userData.id, {
             headers: {
                 'api_token': userData.api_token
             }
@@ -92,14 +92,14 @@ export default class ClientsList extends Component {
     };
 
     onChangeAddClientHandler = (e) => {
-        let {newClientDetails} = this.state;
+        let { newClientDetails } = this.state;
         newClientDetails[e.target.name] = e.target.value;
         const userData = JSON.parse(localStorage.getItem('userData'));
         newClientDetails['admin_id'] = userData.id;
         if (e.target.name === 'profile_picture') {
             newClientDetails['profile_picture'] = e.target.files[0];
         }
-        this.setState({newClientDetails});
+        this.setState({ newClientDetails });
     };
 
     convertToFormData = (object) => {
@@ -117,7 +117,7 @@ export default class ClientsList extends Component {
         }).then((response) => {
 
             if (response.data.status === 200) {
-                const {clients} = this.state;
+                const { clients } = this.state;
                 const newClients = [...clients];
                 newClients.push(response.data);
                 this.setState(
@@ -162,27 +162,27 @@ export default class ClientsList extends Component {
     };
 
     onChangeEditClientHandler = (e) => {
-        let {editClientDetails} = this.state;
+        let { editClientDetails } = this.state;
         if (e.target.name === 'profile_picture') {
             editClientDetails['profile_picture'] = e.target.files[0];
         } else {
             editClientDetails[e.target.name] = e.target.value;
         }
-        this.setState({editClientDetails});
+        this.setState({ editClientDetails });
     };
 
     editClient = (id, first_name, surname, email, profile_picture) => {
         this.setState({
-            editClientDetails: {id, first_name, surname, email, profile_picture},
+            editClientDetails: { id, first_name, surname, email, profile_picture },
             editClientModal: !this.state.editClientModal
         });
     };
 
     updateClient = () => {
         const userData = JSON.parse(localStorage.getItem('userData'));
-        let {id, first_name, surname, email, profile_picture} = this.state.editClientDetails;
+        let { id, first_name, surname, email, profile_picture } = this.state.editClientDetails;
 
-        axios.post('/api/updateClient', this.convertToFormData({id, first_name, surname, email, profile_picture}), {
+        axios.post('/api/updateClient', this.convertToFormData({ id, first_name, surname, email, profile_picture }), {
             headers: {
                 'api_token': userData.api_token
             }
@@ -191,7 +191,7 @@ export default class ClientsList extends Component {
                 this.getClients();
                 this.setState({
                     editClientModal: false,
-                    editClientDetails: {first_name, surname, email, profile_picture},
+                    editClientDetails: { first_name, surname, email, profile_picture },
                 });
             } else if (response.data.status === 500) {
 
@@ -241,10 +241,10 @@ export default class ClientsList extends Component {
     render() {
         const login = localStorage.getItem('isLoggedIn');
         if (!login) {
-            return <Navigate to="/login"/>;
+            return <Navigate to="/login" />;
         }
 
-        const {newClientDetails, noDataFound, clients} = this.state;
+        const { newClientDetails, noDataFound, clients } = this.state;
         let clientDetails = [];
         const userData = JSON.parse(localStorage.getItem('userData'));
 
@@ -257,23 +257,23 @@ export default class ClientsList extends Component {
                         <td>{client.surname}</td>
                         <td>{client.email}</td>
                         <td><img alt="profile_pic" src={"images/" + client.profile_picture}
-                                 className="img-fluid img-bordered" width="50px" height="50px"
+                            className="img-fluid img-bordered" width="50px" height="50px"
                         /></td>
                         <td>
                             <Button color="success" size="sm" className="mr-3 edit-button"
-                                    onClick={() =>
-                                        this.editClient(
-                                            client.id,
-                                            client.first_name,
-                                            client.surname,
-                                            client.email,
-                                            client.profile_picture
-                                        )
-                                    }>
+                                onClick={() =>
+                                    this.editClient(
+                                        client.id,
+                                        client.first_name,
+                                        client.surname,
+                                        client.email,
+                                        client.profile_picture
+                                    )
+                                }>
                                 Edit
                             </Button>
                             <Button color="danger" size="sm"
-                                    onClick={() => this.deleteClient(client.id)}>
+                                onClick={() => this.deleteClient(client.id)}>
                                 Delete
                             </Button>
                         </td>
@@ -317,20 +317,20 @@ export default class ClientsList extends Component {
                     />
                     <Table>
                         <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>First Name</th>
-                            <th>Surname</th>
-                            <th>Email</th>
-                            <th>Profile Picture</th>
-                            <th>Actions</th>
-                        </tr>
+                            <tr>
+                                <th>ID</th>
+                                <th>First Name</th>
+                                <th>Surname</th>
+                                <th>Email</th>
+                                <th>Profile Picture</th>
+                                <th>Actions</th>
+                            </tr>
                         </thead>
                         {clients.length === 0 ? (<tbody>
                             <tr>
                                 <td>{noDataFound}</td>
                             </tr>
-                            </tbody>) :
+                        </tbody>) :
                             (<tbody>{clientDetails}</tbody>)}
                     </Table>
                 </div>

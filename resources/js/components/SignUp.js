@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {Button, Form, FormGroup, Label, Input} from "reactstrap";
+import React, { Component } from 'react';
+import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import axios from "axios";
 import "../../css/signup.css";
-import {Navigate, Redirect} from "react-router-dom";
+import { Navigate, Redirect } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 
 export default class SignUp extends Component {
@@ -32,9 +32,9 @@ export default class SignUp extends Component {
 
     onChangeHandler = (e, key) => {
 
-        const {registrationDetails} = this.state;
+        const { registrationDetails } = this.state;
         registrationDetails[e.target.name] = e.target.value;
-        this.setState({registrationDetails});
+        this.setState({ registrationDetails });
     };
 
     onChangeRecaptcha = (value) => {
@@ -45,11 +45,11 @@ export default class SignUp extends Component {
 
     onSubmitHandler = (e) => {
         e.preventDefault();
-        this.setState({isLoading: true});
+        this.setState({ isLoading: true });
 
         axios.post(`/api/register`, this.state.registrationDetails)
             .then((response) => {
-                this.setState({isLoading: false});
+                this.setState({ isLoading: false });
                 if (response.data.status === 200) {
                     this.setState({
                         message: response.data.message,
@@ -92,11 +92,11 @@ export default class SignUp extends Component {
 
     render() {
         if (this.state.redirect) {
-            return <Navigate to="/dashboard"/>;
+            return <Navigate to="/client" />;
         }
         const login = localStorage.getItem('isLoggedIn');
         if (login) {
-            return <Navigate to="/dashboard"/>;
+            return <Navigate to="/client" />;
         }
 
         const isLoading = this.state.isLoading;
@@ -106,57 +106,57 @@ export default class SignUp extends Component {
                 <Form className="containers sign-up">
                     <h3 className="title">Create Your Account</h3>
                     <FormGroup>
-                        <Label for="first_name">First Name</Label>
+                        <Label for="first_name">First name</Label>
                         <Input type="name" name="first_name" placeholder="First Name"
-                               value={this.state.registrationDetails.first_name} onChange={this.onChangeHandler}
-                               required/>
+                            value={this.state.registrationDetails.first_name} onChange={this.onChangeHandler}
+                            required />
                         <span className="text-danger">{this.state.firstNameErrorMessage}</span>
                     </FormGroup>
                     <FormGroup>
                         <Label for="surname">Surname</Label>
                         <Input type="name" name="surname" placeholder="Surname"
-                               value={this.state.registrationDetails.surname} onChange={this.onChangeHandler}
-                               required/>
+                            value={this.state.registrationDetails.surname} onChange={this.onChangeHandler}
+                            required />
                         <span className="text-danger">{this.state.surnameErrorMessage}</span>
                     </FormGroup>
                     <FormGroup>
                         <Label for="email">Email</Label>
                         <Input type="email" name="email" placeholder="Email"
-                               value={this.state.registrationDetails.email} onChange={this.onChangeHandler}
-                               required/>
+                            value={this.state.registrationDetails.email} onChange={this.onChangeHandler}
+                            required />
                         <span className="text-danger">{this.state.emailErrorMessage}</span>
                     </FormGroup>
                     <FormGroup>
-                        <Label for="confirm_email">Email</Label>
+                        <Label for="confirm_email">Confirm Email Address</Label>
                         <Input type="email" name="confirm_email" placeholder="Confirm Email address"
-                               value={this.state.registrationDetails.confirm_email} onChange={this.onChangeHandler}
-                               required/>
+                            value={this.state.registrationDetails.confirm_email} onChange={this.onChangeHandler}
+                            required />
                         <span className="text-danger">{this.state.confirmEmailErrorMessage}</span>
                     </FormGroup>
                     <FormGroup>
-                        <Label for="password">Email</Label>
+                        <Label for="password">Password</Label>
                         <Input type="password" name="password" placeholder="Password"
-                               value={this.state.registrationDetails.password} onChange={this.onChangeHandler}
-                               required/>
+                            value={this.state.registrationDetails.password} onChange={this.onChangeHandler}
+                            required />
                         <span className="text-danger">{this.state.passwordErrorMessage}</span>
                     </FormGroup>
                     <FormGroup>
-                        <Label for="confirm_password">Email</Label>
+                        <Label for="confirm_password">Repeat Your Password</Label>
                         <Input type="password" name="confirm_password" placeholder="Repeat your password"
-                               value={this.state.registrationDetails.confirm_password} onChange={this.onChangeHandler}
-                               required/>
+                            value={this.state.registrationDetails.confirm_password} onChange={this.onChangeHandler}
+                            required />
                         <span className="text-danger">{this.state.confirmPasswordErrorMessage}</span>
                     </FormGroup>
                     <FormGroup>
                         <ReCAPTCHA sitekey={process.env.MIX_NOCAPTCHA_SITEKEY}
-                                   onChange={this.onChangeRecaptcha}/>
+                            onChange={this.onChangeRecaptcha} />
                     </FormGroup>
                     <p className="text-danger">{this.state.message}</p>
                     <Button className="text-center mb-4" color="success" onClick={this.onSubmitHandler}
-                            disabled={!this.state.g_recaptcha_response}>
+                        disabled={!this.state.g_recaptcha_response}>
                         Register
                         {isLoading ? (
-                            <span className="spinner-border spinner-border-sm ml-5" role="status" aria-hidden="true"/>
+                            <span className="spinner-border spinner-border-sm ml-5" role="status" aria-hidden="true" />
 
                         ) : (
                             <span></span>

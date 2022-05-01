@@ -6,14 +6,14 @@ import SignIn from './SignIn'
 import ClientsList from './ClientsList'
 
 class App extends Component {
-    render () {
+    render() {
         return (
             <BrowserRouter>
                 <div>
                     <Routes>
-                        <Route path='/dashboard' element={<ClientsList/>} />
-                        <Route path='/register' element={<SignUp/>} />
-                        <Route path='/login' element={<SignIn/>} />
+                        <Route path='/client' element={<ClientsList />} />
+                        <Route path='/register' element={<SignUp />} />
+                        <Route path='/login' element={<SignIn />} />
                     </Routes>
                 </div>
             </BrowserRouter>

@@ -14,15 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/register', 'HomeController@showRegistrationForm');
-Route::post('/register', 'HomeController@registerUser');
-Route::get('/login', 'HomeController@showLoginForm');
-Route::post('/login', 'HomeController@loginUser')->name('login');
-Route::post('/logout', 'HomeController@logout')->name('logout');
+Route::get('/register', 'AdminController@showRegistrationForm');
+Route::post('/register', 'AdminController@registerUser');
+Route::get('/login', 'AdminController@showLoginForm');
+Route::post('/login', 'AdminController@loginUser')->name('login');
+Route::post('/logout', 'AdminController@logout')->name('logout');
 
 Route::group(['middleware' => \App\Http\Middleware\IsAdmin::class], function () {
-    Route::get('/dashboard/{id}', 'DashboardController@index');
-    Route::post('/createClient', 'DashboardController@createClient');
-    Route::post('/updateClient', 'DashboardController@updateClient');
-    Route::delete('/deleteClient/{id}', 'DashboardController@deleteClient');
+    Route::get('/client/{id}', 'ClientController@index');
+    Route::post('/createClient', 'ClientController@createClient');
+    Route::post('/updateClient', 'ClientController@updateClient');
+    Route::delete('/deleteClient/{id}', 'ClientController@deleteClient');
 });
