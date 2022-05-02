@@ -4,23 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ClientCreateRequest;
 use App\Http\Requests\ClientUpdateRequest;
-use App\Models\Client;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Services\ClientService;
 use Illuminate\Routing\Controller as BaseController;
 
 
 class ClientController extends BaseController
 {
-    public function __construct()
+
+    private $clientService;
+
+    public function __construct(ClientService $clientService)
     {
         $this->middleware('admin');
+        $this->clientService = $clientService;
     }
 
 
-    public function index($userId)
+    public function index()
     {
-        $clients = Client::where('admin_id', $userId)->get();
+        $clients = $this->clientService->getAllClients();
         return $clients->toJson();
     }
 
@@ -28,85 +30,37 @@ class ClientController extends BaseController
     {
         $request->validated();
 
-        // if ($validation->fails()) {
-        //     return json_encode(["status" => 500, "errors" => $validation->errors()]);
-        // }
+        $clientDetails = $request->all();
+        $clientDetails['profile_picture'] = $this->imageUpload($request->profile_picture);
+        $client = $this->clientService->createClient($clientDetails);
 
-        $profile_picture = $request->profile_picture;
-        $filename = time() . rand(5, 5) . '.' . $profile_picture->getClientOriginalExtension();
-        $profile_picture->move('images/', $filename);
-
-        $userDetails = [
-            'first_name' => $request->first_name,
-            'surname' => $request->surname,
-            'email' => $request->email,
-            'profile_picture' => $filename,
-            'admin_id' => $request->admin_id
-        ];
-
-        $client = Client::create($userDetails);
-
-        if ($client) {
-            return response()->json(["status" => 200, "message" => "Client details added successfully", "data" => $client]);
-        } else {
-            return response()->json(["status" => 500, "message" => "failed to add the client"]);
-        }
+        return response()->json($client);
     }
 
     public function updateClient(ClientUpdateRequest $request)
     {
         $request->validated();
-
-
-        // if ($validation->fails()) {
-        //     return response()->json(["status" => 500, "errors" => $validation->errors()]);
-        // }
+        $clientDetails = $request->all();
 
         if ($request->hasFile('profile_picture')) {
-            $validation = Validator::make($request->all(), [
-                'profile_picture' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-            ]);
-
-            if ($validation->fails()) {
-                return response()->json(["status" => 500, "errors" => $validation->errors()]);
-            }
-
-            $profile_picture = $request->profile_picture;
-            $filename = time() . rand(5, 5) . '.' . $profile_picture->getClientOriginalExtension();
-            $profile_picture->move('images/', $filename);
-        } else {
-            $filename = $request->profile_picture;
+            $clientDetails['profile_picture']  = $this->imageUpload($request->profile_picture);
         }
 
+        $client = $this->clientService->updateClient($clientDetails['id'],$clientDetails);
 
-        $userDetails = [
-            'first_name' => $request->first_name,
-            'surname' => $request->surname,
-            'email' => $request->email,
-            'profile_picture' => $filename
-        ];
-
-        $client = Client::where('id', $request->id)->update($userDetails);
-
-        if ($client) {
-            return response()->json(["status" => 200, "message" => "Client details updated successfully", "data" => $client]);
-        } else {
-            return response()->json(["status" => 500, "message" => "failed to update the client"]);
-        }
+        return response()->json($client);
     }
 
     public function deleteClient($id)
     {
-        $client = Client::find($id);
-        if (!is_null($client)) {
-            $delete_status = Client::where("id", $id)->delete();
-            if ($delete_status == 1) {
-                return response()->json(["status" => 200, "success" => true, "message" => "client record deleted successfully"]);
-            } else {
-                return response()->json(["status" => 500, "message" => "failed to delete, please try again"]);
-            }
-        } else {
-            return response()->json(["status" => 500, "message" => "Whoops! no client found with this id"]);
-        }
+        return response()->json($this->clientService->deleteClient($id));
+    }
+
+    private function imageUpload($image)
+    {
+        $filename = time() . rand(5, 5) . '.' . $image->getClientOriginalExtension();
+        $image->move('images/', $filename);
+
+        return $filename;
     }
 }
