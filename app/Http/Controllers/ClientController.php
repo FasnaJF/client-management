@@ -23,7 +23,7 @@ class ClientController extends BaseController
     public function index()
     {
         $clients = $this->clientService->getAllClients();
-        return $clients->toJson();
+        return response()->json($clients);
     }
 
     public function createClient(ClientCreateRequest $request)
@@ -32,7 +32,7 @@ class ClientController extends BaseController
 
         $clientDetails = $request->all();
         $clientDetails['profile_picture'] = $this->imageUpload($request->profile_picture);
-        $client = $this->clientService->createClient($clientDetails);
+        $client = $this->clientService->storeClient(null,$clientDetails);
 
         return response()->json($client);
     }
@@ -46,7 +46,7 @@ class ClientController extends BaseController
             $clientDetails['profile_picture']  = $this->imageUpload($request->profile_picture);
         }
 
-        $client = $this->clientService->updateClient($clientDetails['id'],$clientDetails);
+        $client = $this->clientService->storeClient($clientDetails['id'],$clientDetails);
 
         return response()->json($client);
     }

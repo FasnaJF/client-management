@@ -15,12 +15,7 @@ class UserService
         $this->userRepo = $userRepo;
     }
 
-    public function getAllUsers()
-    {
-        return $this->userRepo->getAll();
-    }
-
-    public function createUser($data)
+      public function createUser($data)
     {
         return $this->userRepo->create($data);
     }
@@ -30,13 +25,14 @@ class UserService
         return $this->userRepo->getById($id);
     }
 
-    public function updateUser($id, $collection = []){
+    public function getUserByEmail($email){
+
+        return $this->userRepo->getByEmail($email);
+    }
+    
+    public function updateUserById($id, $collection = []){
 
         return $this->userRepo->updateById($id,$collection);
     }
 
-    public function deleteUser($id){
-
-        return $this->userRepo->deleteById($id);
-    }
 }

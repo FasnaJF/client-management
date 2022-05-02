@@ -12,4 +12,11 @@ class ClientRepository extends BaseRepository implements ClientRepositoryInterfa
         $this->model = $client;
     }
 
+    public function store($id, $data)
+    {
+        if ($id) {
+            return $this->model->update($id, $data);
+        }
+        return $this->model->create($data);
+    }
 }

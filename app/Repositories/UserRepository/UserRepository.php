@@ -12,4 +12,8 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $this->model = $admin;
     }
 
+    public function getByEmail($email)
+    {
+        return  $this->model->where('email', $email)->first();
+    }
 }

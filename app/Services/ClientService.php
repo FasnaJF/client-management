@@ -20,19 +20,14 @@ class ClientService
         return $this->clientRepo->getAll();
     }
 
-    public function createClient($data)
+    public function storeClient($id, $data)
     {
-        return $this->clientRepo->create($data);
+        return $this->clientRepo->store($id, $data);
     }
 
     public function getClientById($id){
 
         return $this->clientRepo->getById($id);
-    }
-
-    public function updateClient($id, $collection = []){
-
-        return $this->clientRepo->updateById($id,$collection);
     }
 
     public function deleteClient($id){

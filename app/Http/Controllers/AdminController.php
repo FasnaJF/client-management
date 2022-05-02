@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Models\Admin;
+use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\UserRegisterRequest;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,76 +16,40 @@ use Illuminate\Routing\Controller as BaseController;
 class AdminController extends BaseController
 {
 
-    public function __construct()
+    private $userService;
+
+    public function __construct(UserService $userService)
     {
         $this->middleware('guest')->except('logout');
+        $this->userService = $userService;
     }
 
-    public function registerUser(Request $request): string
+    public function registerUser(UserRegisterRequest $request): string
     {
-        $validation = Validator::make($request->all(), [
-            'first_name' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
-            'email' => [
-                'required_with:confirm_email',
-                'same:confirm_email',
-                'string',
-                'email',
-                'max:255',
-                'unique:users,email',
-            ],
-            'confirm_email' => 'string|email|max:255',
-            'password' => 'required_with:confirm_password|same:confirm_password|min:6',
-            'confirm_password' => 'min:6'
-        ]);
-        if ($validation->fails()) {
-            return json_encode(["status" => 500, "message" => "You need to enter all fields", "errors" => $validation->errors()]);
-        }
+        $request->validated();
 
-        $userDetails = [
-            'first_name' => $request->first_name,
-            'surname' => $request->surname,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ];
+        $userDetails = $request->all();
+        $userDetails['password'] =  Hash::make($request->password);
 
-        $user = Admin::create($userDetails);
-
-        if ($user) {
-            return json_encode(["status" => 200, "message" => "You have registered successfully", "data" => $user]);
-        } else {
-            return json_encode(["status" => 500, "message" => "failed to register"]);
-        }
+        $user = $this->userService->createUser($userDetails);
+        return json_encode($user);
     }
 
-    public function loginUser(Request $request)
+    public function loginUser(UserLoginRequest $request)
     {
-        $validation = Validator::make(
-            $request->all(),
-            [
-                'email' => 'required|email',
-                'password' => 'required'
-            ]
-        );
-        if ($validation->fails()) {
-            return json_encode(["status" => 500, "errors" => $validation->errors()]);
-        }
+        $request->validated();
 
-        $user = Admin::where('email', $request->email)->first();
+
+        $user = $this->userService->getUserByEmail($request->email);
         if (!$user) {
-            return json_encode(["status" => 500, "message" => "Unable to login. Email doesn't exist."]);
+            return json_encode($user);
         }
-        $user->api_token = Str::random(60);
-        $user->save();
-
+        $userDetails['api_token'] = Str::random(60);
+        $user = $this->userService->updateUserById($user->id, $userDetails);
 
         $credentials = $request->except(['_token']);
 
-        if (Auth::attempt($credentials)) {
-            return json_encode(["status" => 200, "message" => "You have logged in successfully", "data" => $user]);
-        } else {
-            return json_encode(["status" => 500, "message" => "Unable to login. Incorrect password."]);
-        }
+        return json_encode(Auth::attempt($credentials));
     }
 
     public function logout(Request $request)
