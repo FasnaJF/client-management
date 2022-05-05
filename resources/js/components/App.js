@@ -1,24 +1,73 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import SignUp from './SignUp'
-import SignIn from './SignIn'
-import ClientsList from './ClientsList'
+import React, { useState, useEffect } from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../../css/app.css";
+import AuthService from "../services/auth.service";
+import Login from "../components/Login";
+import Register from "../components/Register";
+import Client from "../components/Client";
+import ClientList from "../components/ClientList";
+import AddClient from "../components/AddClient";
 
-class App extends Component {
-    render() {
-        return (
-            <BrowserRouter>
-                <div>
-                    <Routes>
-                        <Route path='/client' element={<ClientsList />} />
-                        <Route path='/register' element={<SignUp />} />
-                        <Route path='/login' element={<SignIn />} />
-                    </Routes>
-                </div>
-            </BrowserRouter>
-        )
+const App = () => {
+
+  const [currentUser, setCurrentUser] = useState(undefined);
+  useEffect(() => {
+    const user = AuthService.getCurrentUser();
+    if (user) {
+      setCurrentUser(user);
     }
-}
+  }, []);
+  const logout = () => {
+    AuthService.logout();
+  };
+  return (
+    <div>
+      <nav className="navbar navbar-expand navbar-dark bg-dark">
+        <a href="/dashboard" className="navbar-brand">
+          Client Management
+        </a>
 
-ReactDOM.render(<App />, document.getElementById('app'))
+        {currentUser ? (
+          <div className="navbar-nav ml-auto">
+            <li className="nav-item">
+              <a href="/login" className="nav-link" onClick={logout}>
+                Logout
+              </a>
+            </li>
+            <li className="nav-item">
+            <Link to={"/add"} className="nav-link">
+              Add New Client
+            </Link>
+          </li>
+          </div>
+          
+        ) : (
+          <div className="navbar-nav ml-auto">
+            <li className="nav-item">
+              <Link to={"/login"} className="nav-link">
+                Login
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/register"} className="nav-link">
+                Sign Up
+              </Link>
+            </li>
+          </div>
+        )}
+      </nav>
+      <div className="container mt-3">
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<ClientList />} />
+          <Route path="/" element={<ClientList />} />
+          <Route path="/add" element={<AddClient />} />
+          <Route path="/clients/:id" element={<Client />} />
+        </Routes>
+      </div>
+    </div>
+  );
+};
+export default App;

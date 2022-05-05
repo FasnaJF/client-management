@@ -37,6 +37,7 @@ class ClientCreateRequest extends FormRequest
                 'unique:clients,email',
             ],
             'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'admin_id' => 'required'
 
         ];
     }

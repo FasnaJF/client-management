@@ -27,10 +27,8 @@ class ClientController extends BaseController
     }
 
     public function createClient(ClientCreateRequest $request)
-    {
-        $request->validated();
-
-        $clientDetails = $request->all();
+    {        
+        $clientDetails = $request->validated();
         $clientDetails['profile_picture'] = $this->imageUpload($request->profile_picture);
         $client = $this->clientService->storeClient(null,$clientDetails);
 
