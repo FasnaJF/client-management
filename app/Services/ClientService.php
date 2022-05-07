@@ -15,9 +15,9 @@ class ClientService
         $this->clientRepo = $clientRepo;
     }
 
-    public function getAllClients()
+    public function getAllClientsByUser($adminId)
     {
-        return $this->clientRepo->getAll();
+        return $this->clientRepo->getAllClientsByUserId($adminId);
     }
 
     public function storeClient($id, $data)

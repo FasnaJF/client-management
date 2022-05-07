@@ -19,8 +19,8 @@ class IsAdmin
     public function handle(Request $request, Closure $next)
     {
         $api_token = $request->header('api_token');
-        $user = Admin::where('api_token', $api_token)->first();
-        if ($user->admin_level) {
+        $user = Admin::where('api_token', $api_token)->whereNotNull('api_token')->first();
+        if ($user && $user->admin_level) {
             Auth::loginUsingId($user->id);
             return $next($request);
         }

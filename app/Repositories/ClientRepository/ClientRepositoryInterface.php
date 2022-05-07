@@ -9,4 +9,6 @@ use App\Repositories\BaseRepositoryInterface;
 interface ClientRepositoryInterface extends BaseRepositoryInterface
 {
     public function store($id, $data);
+
+    public function getAllClientsByUserId($id);
 }

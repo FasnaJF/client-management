@@ -22,5 +22,6 @@ Route::group(['middleware' => \App\Http\Middleware\IsAdmin::class], function () 
     Route::get('/clients', 'ClientController@index');
     Route::post('/clients', 'ClientController@createClient');
     Route::put('/clients/{id}', 'ClientController@updateClient');
-    Route::delete('/clients', 'ClientController@deleteClient');
+    Route::get('/clients/{id}', 'ClientController@getClient');
+    Route::delete('/clients/{id}', 'ClientController@deleteClient');
 });

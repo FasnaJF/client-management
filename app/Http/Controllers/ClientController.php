@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ClientCreateRequest;
 use App\Http\Requests\ClientUpdateRequest;
+use App\Models\Admin;
+use App\Models\Client;
 use App\Services\ClientService;
 use Illuminate\Routing\Controller as BaseController;
-
+use Illuminate\Support\Facades\Auth;
 
 class ClientController extends BaseController
 {
@@ -22,7 +24,13 @@ class ClientController extends BaseController
 
     public function index()
     {
-        $clients = $this->clientService->getAllClients();
+        $user = Auth::user();
+        $clients = $this->clientService->getAllClientsByUser($user->id);
+        
+        if($clients->count() == 0){
+            return response()->json("You don't have any clients yet");
+
+        }
         return response()->json($clients);
     }
 
@@ -37,8 +45,8 @@ class ClientController extends BaseController
 
     public function updateClient(ClientUpdateRequest $request)
     {
-        $request->validated();
-        $clientDetails = $request->all();
+        
+        $clientDetails = $request->validated();
 
         if ($request->hasFile('profile_picture')) {
             $clientDetails['profile_picture']  = $this->imageUpload($request->profile_picture);
@@ -52,6 +60,11 @@ class ClientController extends BaseController
     public function deleteClient($id)
     {
         return response()->json($this->clientService->deleteClient($id));
+    }
+
+    public function getClient($id)
+    {
+        return response()->json($this->clientService->getClientById($id));
     }
 
     private function imageUpload($image)

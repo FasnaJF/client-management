@@ -28,6 +28,7 @@ class ClientUpdateRequest extends FormRequest
 
         return [
 
+            'id' => 'required|numeric',
             'first_name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
             'email' => [

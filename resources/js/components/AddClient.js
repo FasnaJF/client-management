@@ -59,49 +59,54 @@ const AddClient = () => {
   }
 
   const onSubmit = data => {
-
+    setMessage("");
     const userData = JSON.parse(localStorage.getItem('user'));
     data['admin_id'] = userData.id;
     data['profile_picture'] = data.profile_picture[0];
 
     ClientDataService.create(convertToFormData(data))
-      .then(
-        (response) => {
-          setClient({
-            id: response.data.id,
-            first_name: response.data.first_name,
-            surname: response.data.surname,
-            email: response.data.email,
-            profile_picture: response.data.profile_picture,
+      .then((response) => {
 
-          });
-          setSubmitted(true);
+        setClient({
+          id: response.data.id,
+          first_name: response.data.first_name,
+          surname: response.data.surname,
+          email: response.data.email,
+          profile_picture: response.data.profile_picture,
 
-        }),
-      (error) => {
+        });
+        setSubmitted(true);
+      })
+      .catch((error) => {
         const resMessage =
           (error.response &&
             error.response.data &&
-            error.response.data.message) ||
+            error.response.data.errors) ||
           error.message ||
           error.toString();
         setMessage(resMessage);
         setSuccessful(false);
-      }
+      })
   };
+
   const newClient = () => {
     setClient(initialClientState);
     setSubmitted(false);
   };
+
+  const userData = JSON.parse(localStorage.getItem('user'));
+
   return (
-    <div className="col-md-12">
+    <div>
+    { userData ? (
+      <div className="col-md-12">
       <div className="card card-container">
-        <form onSubmit={handleSubmit(onSubmit)} >
+        <form onSubmit={handleSubmit(onSubmit)}>
           {submitted ? (
             <div>
               <h4>You have created a client entry successfully!</h4>
               <button className="btn btn-success" onClick={newClient}>
-                Add
+                Add another client
               </button>
             </div>
           ) : (
@@ -166,6 +171,13 @@ const AddClient = () => {
           )}
         </form>
       </div>
+    </div>
+    ) : (
+      <div>
+          <br />
+          <p>Please login to proceed..</p>
+      </div>
+  )}
     </div>
   );
 };

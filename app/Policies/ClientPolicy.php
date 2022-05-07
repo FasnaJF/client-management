@@ -36,11 +36,9 @@ class ClientPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\Models\Admin  $user
-     * @param  \App\Models\Client  $client
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(Admin $user)
+    public function create()
     {
         return true;
     }

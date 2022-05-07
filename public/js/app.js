@@ -5462,6 +5462,7 @@ var AddClient = function AddClient() {
   };
 
   var onSubmit = function onSubmit(data) {
+    setMessage("");
     var userData = JSON.parse(localStorage.getItem('user'));
     data['admin_id'] = userData.id;
     data['profile_picture'] = data.profile_picture[0];
@@ -5474,11 +5475,11 @@ var AddClient = function AddClient() {
         profile_picture: response.data.profile_picture
       });
       setSubmitted(true);
-    }), function (error) {
-      var resMessage = error.response && error.response.data && error.response.data.message || error.message || error.toString();
+    })["catch"](function (error) {
+      var resMessage = error.response && error.response.data && error.response.data.errors || error.message || error.toString();
       setMessage(resMessage);
       setSuccessful(false);
-    };
+    });
   };
 
   var newClient = function newClient() {
@@ -5486,97 +5487,104 @@ var AddClient = function AddClient() {
     setSubmitted(false);
   };
 
+  var userData = JSON.parse(localStorage.getItem('user'));
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-    className: "col-md-12",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-      className: "card card-container",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("form", {
-        onSubmit: handleSubmit(onSubmit),
-        children: [submitted ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h4", {
-            children: "You have created a client entry successfully!"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
-            className: "btn btn-success",
-            onClick: newClient,
-            children: "Add"
-          })]
-        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-            className: "form-group",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
-              htmlFor: "first_name",
-              children: "First Name"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", _objectSpread(_objectSpread({
-              type: "text",
-              id: "first_name",
-              name: "first_name"
-            }, register('first_name')), {}, {
-              className: "form-control ".concat(errors.first_name ? 'is-invalid' : '')
-            })), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-              className: "invalid-feedback",
-              children: (_errors$first_name = errors.first_name) === null || _errors$first_name === void 0 ? void 0 : _errors$first_name.message
+    children: userData ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      className: "col-md-12",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        className: "card card-container",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("form", {
+          onSubmit: handleSubmit(onSubmit),
+          children: [submitted ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h4", {
+              children: "You have created a client entry successfully!"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+              className: "btn btn-success",
+              onClick: newClient,
+              children: "Add another client"
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-            className: "form-group",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
-              htmlFor: "surname",
-              children: "Surname"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", _objectSpread(_objectSpread({
-              type: "text",
-              id: "surname",
-              name: "surname"
-            }, register('surname')), {}, {
-              className: "form-control ".concat(errors.surname ? 'is-invalid' : '')
-            })), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-              className: "invalid-feedback",
-              children: (_errors$surname = errors.surname) === null || _errors$surname === void 0 ? void 0 : _errors$surname.message
+          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              className: "form-group",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+                htmlFor: "first_name",
+                children: "First Name"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", _objectSpread(_objectSpread({
+                type: "text",
+                id: "first_name",
+                name: "first_name"
+              }, register('first_name')), {}, {
+                className: "form-control ".concat(errors.first_name ? 'is-invalid' : '')
+              })), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                className: "invalid-feedback",
+                children: (_errors$first_name = errors.first_name) === null || _errors$first_name === void 0 ? void 0 : _errors$first_name.message
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              className: "form-group",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+                htmlFor: "surname",
+                children: "Surname"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", _objectSpread(_objectSpread({
+                type: "text",
+                id: "surname",
+                name: "surname"
+              }, register('surname')), {}, {
+                className: "form-control ".concat(errors.surname ? 'is-invalid' : '')
+              })), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                className: "invalid-feedback",
+                children: (_errors$surname = errors.surname) === null || _errors$surname === void 0 ? void 0 : _errors$surname.message
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              className: "form-group",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+                htmlFor: "email",
+                children: "Email"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", _objectSpread(_objectSpread({
+                type: "email",
+                id: "email",
+                name: "email"
+              }, register('email')), {}, {
+                className: "form-control ".concat(errors.email ? 'is-invalid' : '')
+              })), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                className: "invalid-feedback",
+                children: (_errors$email = errors.email) === null || _errors$email === void 0 ? void 0 : _errors$email.message
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              className: "form-group",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+                htmlFor: "profile_picture",
+                children: "Profile Picture"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", _objectSpread(_objectSpread({
+                type: "file",
+                id: "profile_picture",
+                name: "profile_picture"
+              }, register('profile_picture')), {}, {
+                className: "form-control ".concat(errors.profile_picture ? 'is-invalid' : '')
+              })), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                className: "invalid-feedback",
+                children: (_errors$profile_pictu = errors.profile_picture) === null || _errors$profile_pictu === void 0 ? void 0 : _errors$profile_pictu.message
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+              className: "form-group",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                className: "btn btn-primary btn-block",
+                children: "Submit"
+              })
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          }), message && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             className: "form-group",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
-              htmlFor: "email",
-              children: "Email"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", _objectSpread(_objectSpread({
-              type: "email",
-              id: "email",
-              name: "email"
-            }, register('email')), {}, {
-              className: "form-control ".concat(errors.email ? 'is-invalid' : '')
-            })), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-              className: "invalid-feedback",
-              children: (_errors$email = errors.email) === null || _errors$email === void 0 ? void 0 : _errors$email.message
-            })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-            className: "form-group",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
-              htmlFor: "profile_picture",
-              children: "Profile Picture"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", _objectSpread(_objectSpread({
-              type: "file",
-              id: "profile_picture",
-              name: "profile_picture"
-            }, register('profile_picture')), {}, {
-              className: "form-control ".concat(errors.profile_picture ? 'is-invalid' : '')
-            })), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-              className: "invalid-feedback",
-              children: (_errors$profile_pictu = errors.profile_picture) === null || _errors$profile_pictu === void 0 ? void 0 : _errors$profile_pictu.message
-            })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-            className: "form-group",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
-              className: "btn btn-primary btn-block",
-              children: "Submit"
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+              className: "alert alert-danger",
+              role: "alert",
+              children: message
             })
           })]
-        }), message && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-          className: "form-group",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-            className: "alert alert-danger",
-            role: "alert",
-            children: message
-          })
-        })]
+        })
       })
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+        children: "Please login to proceed.."
+      })]
     })
   });
 };
@@ -5737,9 +5745,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/index.js");
-/* harmony import */ var _services_ClientService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/ClientService */ "./resources/js/services/ClientService.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/index.js");
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
+/* harmony import */ var _hookform_resolvers_yup__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @hookform/resolvers/yup */ "./node_modules/@hookform/resolvers/yup/dist/yup.module.js");
+/* harmony import */ var yup__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! yup */ "./node_modules/yup/es/index.js");
+/* harmony import */ var _services_ClientService__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/ClientService */ "./resources/js/services/ClientService.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -5758,6 +5769,12 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+
+
+
+
 
 
 
@@ -5765,16 +5782,30 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var Client = function Client(props) {
-  var _useParams = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useParams)(),
+  var _errors$first_name, _errors$surname, _errors$email, _errors$profile_pictu;
+
+  var validationSchema = yup__WEBPACK_IMPORTED_MODULE_2__.object().shape({
+    first_name: yup__WEBPACK_IMPORTED_MODULE_2__.string().required('First Name is required'),
+    surname: yup__WEBPACK_IMPORTED_MODULE_2__.string().required('Surname is required'),
+    email: yup__WEBPACK_IMPORTED_MODULE_2__.string().required('Email is required').email('Email is invalid'),
+    profile_picture: yup__WEBPACK_IMPORTED_MODULE_2__.mixed().test("fileSize", "The file is too large", function (value) {
+      return _typeof(value[0]) == 'object' ? value && value[0] && value[0].size <= 20000000 : true;
+    }).test("type", "Only the following formats are accepted: .jpeg, .jpg, .gif, .svg and.png", function (value) {
+      return _typeof(value[0]) == 'object' ? value && value[0] && (value[0].type === "image/jpeg" || value[0].type === "image/jpg" || value[0].type === "image/png" || value[0].type === "image/gif" || value[0].type === "image/svg") : true;
+    })
+  });
+
+  var _useParams = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useParams)(),
       id = _useParams.id;
 
-  var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate)();
+  var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useNavigate)();
   var initialClientState = {
     id: null,
     first_name: "",
     surname: "",
     email: "",
-    profile_picture: ""
+    profile_picture: "",
+    admin_id: ""
   };
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(initialClientState),
@@ -5787,10 +5818,22 @@ var Client = function Client(props) {
       message = _useState4[0],
       setMessage = _useState4[1];
 
+  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_6__.useForm)({
+    resolver: (0,_hookform_resolvers_yup__WEBPACK_IMPORTED_MODULE_1__.yupResolver)(validationSchema)
+  }),
+      register = _useForm.register,
+      handleSubmit = _useForm.handleSubmit,
+      setValue = _useForm.setValue,
+      errors = _useForm.formState.errors;
+
   var getClient = function getClient(id) {
-    _services_ClientService__WEBPACK_IMPORTED_MODULE_1__["default"].get(id).then(function (response) {
+    _services_ClientService__WEBPACK_IMPORTED_MODULE_3__["default"].get(id).then(function (response) {
+      var client = response.data;
       setCurrentClient(response.data);
-      console.log(response.data);
+      var fields = ['first_name', 'surname', 'email', 'profile_picture'];
+      fields.forEach(function (field) {
+        return setValue(field, client[field]);
+      });
     })["catch"](function (e) {
       console.log(e);
     });
@@ -5807,26 +5850,9 @@ var Client = function Client(props) {
     setCurrentClient(_objectSpread(_objectSpread({}, currentClient), {}, _defineProperty({}, name, value)));
   };
 
-  var updatePublished = function updatePublished(status) {
-    var data = {
-      id: currentClient.id,
-      title: currentClient.title,
-      description: currentClient.description,
-      published: status
-    };
-    _services_ClientService__WEBPACK_IMPORTED_MODULE_1__["default"].update(currentClient.id, data).then(function (response) {
-      setCurrentClient(_objectSpread(_objectSpread({}, currentClient), {}, {
-        published: status
-      }));
-      console.log(response.data);
-    })["catch"](function (e) {
-      console.log(e);
-    });
-  };
-
-  var updateClient = function updateClient() {
-    _services_ClientService__WEBPACK_IMPORTED_MODULE_1__["default"].update(currentClient.id, currentClient).then(function (response) {
-      console.log(response.data);
+  var onSubmit = function onSubmit() {
+    _services_ClientService__WEBPACK_IMPORTED_MODULE_3__["default"].update(currentClient.id, currentClient).then(function (response) {
+      console.log(response);
       setMessage("The client was updated successfully!");
     })["catch"](function (e) {
       console.log(e);
@@ -5834,81 +5860,110 @@ var Client = function Client(props) {
   };
 
   var deleteClient = function deleteClient() {
-    _services_ClientService__WEBPACK_IMPORTED_MODULE_1__["default"].remove(currentClient.id).then(function (response) {
-      console.log(response.data);
-      navigate("/clients");
+    _services_ClientService__WEBPACK_IMPORTED_MODULE_3__["default"].remove(currentClient.id).then(function (response) {
+      setMessage("The client was deleted successfully! You'll be redirected shortly.");
+      setTimeout(function () {
+        navigate("/");
+      }, 2500);
     })["catch"](function (e) {
       console.log(e);
     });
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-    children: currentClient ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+  var userData = JSON.parse(localStorage.getItem('user'));
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+    children: currentClient && userData ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
       className: "edit-form",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h4", {
-        children: "Client"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("form", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-          className: "form-group",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
-            htmlFor: "title",
-            children: "Title"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
-            type: "text",
-            className: "form-control",
-            id: "title",
-            name: "title",
-            value: currentClient.title,
-            onChange: handleInputChange
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-          className: "form-group",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
-            htmlFor: "description",
-            children: "Description"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
-            type: "text",
-            className: "form-control",
-            id: "description",
-            name: "description",
-            value: currentClient.description,
-            onChange: handleInputChange
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-          className: "form-group",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("strong", {
-              children: "Status:"
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h4", {
+        children: "Edit Client Details"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        className: "col-md-12",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "card card-container",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("form", {
+            onSubmit: handleSubmit(onSubmit),
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              className: "form-group",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+                htmlFor: "first_name",
+                children: "First Name"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", _objectSpread(_objectSpread({
+                type: "text",
+                id: "first_name",
+                name: "first_name"
+              }, register('first_name')), {}, {
+                onChange: handleInputChange,
+                className: "form-control ".concat(errors.first_name ? 'is-invalid' : '')
+              })), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                className: "invalid-feedback",
+                children: (_errors$first_name = errors.first_name) === null || _errors$first_name === void 0 ? void 0 : _errors$first_name.message
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              className: "form-group",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+                htmlFor: "surname",
+                children: "Surname"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", _objectSpread(_objectSpread({
+                type: "text",
+                id: "surname",
+                name: "surname"
+              }, register('surname')), {}, {
+                onChange: handleInputChange,
+                className: "form-control ".concat(errors.surname ? 'is-invalid' : '')
+              })), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                className: "invalid-feedback",
+                children: (_errors$surname = errors.surname) === null || _errors$surname === void 0 ? void 0 : _errors$surname.message
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              className: "form-group",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+                htmlFor: "email",
+                children: "Email"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", _objectSpread(_objectSpread({
+                type: "email",
+                id: "email",
+                name: "email"
+              }, register('email')), {}, {
+                onChange: handleInputChange,
+                className: "form-control ".concat(errors.email ? 'is-invalid' : '')
+              })), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                className: "invalid-feedback",
+                children: (_errors$email = errors.email) === null || _errors$email === void 0 ? void 0 : _errors$email.message
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              className: "form-group",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+                htmlFor: "profile_picture",
+                children: "Profile Picture"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", _objectSpread(_objectSpread({
+                type: "file",
+                id: "profile_picture",
+                name: "profile_picture"
+              }, register('profile_picture')), {}, {
+                onChange: handleInputChange,
+                className: "form-control ".concat(errors.profile_picture ? 'is-invalid' : '')
+              })), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                className: "invalid-feedback",
+                children: (_errors$profile_pictu = errors.profile_picture) === null || _errors$profile_pictu === void 0 ? void 0 : _errors$profile_pictu.message
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+              className: "badge badge-success",
+              children: "Update Client Details"
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+              className: "badge badge-danger mr-2",
+              onClick: deleteClient,
+              children: "Delete Client"
             })
-          }), currentClient.published ? "Published" : "Pending"]
-        })]
-      }), currentClient.published ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-        className: "badge badge-primary mr-2",
-        onClick: function onClick() {
-          return updatePublished(false);
-        },
-        children: "UnPublish"
-      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-        className: "badge badge-primary mr-2",
-        onClick: function onClick() {
-          return updatePublished(true);
-        },
-        children: "Publish"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-        className: "badge badge-danger mr-2",
-        onClick: deleteClient,
-        children: "Delete"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-        type: "submit",
-        className: "badge badge-success",
-        onClick: updateClient,
-        children: "Update"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
-        children: message
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+            children: message
+          })]
+        })
       })]
-    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
-        children: "Please click on a Client..."
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+        children: "Please login to proceed.."
       })]
     })
   });
@@ -5974,7 +6029,6 @@ var ClientList = function ClientList() {
   var retrieveClients = function retrieveClients() {
     _services_ClientService__WEBPACK_IMPORTED_MODULE_1__["default"].getAll().then(function (response) {
       setClients(response.data);
-      console.log(response.data);
     })["catch"](function (e) {
       console.log(e);
     });
@@ -5985,70 +6039,77 @@ var ClientList = function ClientList() {
     setCurrentIndex(index);
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-    className: "list row",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-      className: "col-md-6",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h4", {
-        children: "Clients List"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("ul", {
-        className: "list-group",
-        children: clients && clients.map(function (client, index) {
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("li", {
-            className: "list-group-item " + (index === currentIndex ? "active" : ""),
-            onClick: function onClick() {
-              return setActiveClient(client, index);
-            },
-            children: client.first_name
-          }, index);
+  var userData = JSON.parse(localStorage.getItem('user'));
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+    children: userData ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      className: "list row",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: "col-md-6",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h4", {
+          children: "Clients List"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("ul", {
+          className: "list-group",
+          children: clients && clients.map(function (client, index) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("li", {
+              className: "list-group-item " + (index === currentIndex ? "active" : ""),
+              onClick: function onClick() {
+                return setActiveClient(client, index);
+              },
+              children: client.first_name
+            }, index);
+          })
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "col-md-6",
+        children: currentClient ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h4", {
+            children: "Client Details"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("strong", {
+                children: "Firstname:"
+              })
+            }), " ", currentClient.first_name]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("strong", {
+                children: "Surname:"
+              })
+            }), " ", currentClient.surname]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("strong", {
+                children: "Email:"
+              })
+            }), " ", currentClient.email]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("strong", {
+                children: "Profile Picture:"
+              })
+            }), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
+              alt: "profile_pic",
+              src: "images/" + currentClient.profile_picture,
+              className: "img-fluid img-bordered",
+              width: "200px",
+              height: "200px"
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
+            to: "/clients/" + currentClient.id,
+            className: "badge badge-success",
+            children: "Edit Client Details"
+          })]
+        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
+            children: "Please click on a Client to view more details"
+          })]
         })
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      className: "col-md-6",
-      children: currentClient ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h4", {
-          children: "Client Details"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("strong", {
-              children: "Firstname:"
-            })
-          }), " ", currentClient.first_name]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("strong", {
-              children: "Surname:"
-            })
-          }), " ", currentClient.surname]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("strong", {
-              children: "Email:"
-            })
-          }), " ", currentClient.email]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("strong", {
-              children: "Profile Picture:"
-            })
-          }), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
-            alt: "profile_pic",
-            src: "images/" + currentClient.profile_picture,
-            className: "img-fluid img-bordered",
-            width: "200px",
-            height: "200px"
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
-          to: "/clients/" + currentClient.id,
-          className: "badge badge-warning",
-          children: "Edit"
-        })]
-      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
-          children: "Please click on a Client to view more details"
-        })]
-      })
-    })]
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
+        children: "Please login to proceed.."
+      })]
+    })
   });
 };
 
@@ -6438,7 +6499,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.BrowserRouter, {
+react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.HashRouter, {
   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_js_components_App__WEBPACK_IMPORTED_MODULE_2__["default"], {})
 }), document.getElementById("root"));
 
@@ -6460,22 +6521,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_auth_header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/auth.header */ "./resources/js/services/auth.header.js");
 
 
-var API_URL = "api/";
+var API_URL = "/api";
 
 var getAll = function getAll() {
-  return axios__WEBPACK_IMPORTED_MODULE_0___default().get(API_URL + "clients", {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default().get(API_URL + "/clients", {
     headers: (0,_services_auth_header__WEBPACK_IMPORTED_MODULE_1__["default"])()
   });
 };
 
 var get = function get(id) {
-  return axios__WEBPACK_IMPORTED_MODULE_0___default().get(API_URL + "clients/".concat(id), {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default().get(API_URL + "/clients/".concat(id), {
     headers: (0,_services_auth_header__WEBPACK_IMPORTED_MODULE_1__["default"])()
   });
 };
 
 var create = function create(data) {
-  return axios__WEBPACK_IMPORTED_MODULE_0___default().post(API_URL + "clients", data, {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default().post(API_URL + "/clients", data, {
     headers: (0,_services_auth_header__WEBPACK_IMPORTED_MODULE_1__["default"])()
   });
 };
