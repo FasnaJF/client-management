@@ -82,19 +82,7 @@ const Client = props => {
                 console.log(e);
             });
     };
-    const deleteClient = () => {
-        ClientDataService.remove(currentClient.id)
-            .then(response => {
-                setMessage("The client was deleted successfully! You'll be redirected shortly.");
-
-                setTimeout(() => {
-                    navigate("/")
-                    }, 2500);
-            })
-            .catch(e => {
-                console.log(e);
-            });
-    };
+    
     const userData = JSON.parse(localStorage.getItem('user'));
 
     return (
@@ -154,15 +142,12 @@ const Client = props => {
                                     <div className="invalid-feedback">{errors.profile_picture?.message}</div>
                                 </div>
                                 <button
-                                    className="badge badge-success"
+                                    className="btn btn-warning"
                                 >
                                     Update Client Details
                                 </button>
                             </form>
                             <div>
-                            <button className="badge badge-danger mr-2" onClick={deleteClient}>
-                                    Delete Client
-                            </button>
                             </div>
                             <p>{message}</p>
                         </div>

@@ -23,7 +23,7 @@ const App = () => {
   };
   return (
     <div>
-      <nav className="navbar navbar-expand navbar-dark bg-dark">
+      <nav className="navbar navbar-expand navbar-dark bg-primary">
         <a href="/dashboard" className="navbar-brand">
           Client Management
         </a>
@@ -31,17 +31,16 @@ const App = () => {
         {currentUser ? (
           <div className="navbar-nav ml-auto">
             <li className="nav-item">
+              <Link to={"/add"} className="nav-link">
+                Add New Client
+              </Link>
+            </li>
+            <li className="nav-item">
               <a href="/login" className="nav-link" onClick={logout}>
                 Logout
               </a>
             </li>
-            <li className="nav-item">
-            <Link to={"/add"} className="nav-link">
-              Add New Client
-            </Link>
-          </li>
           </div>
-          
         ) : (
           <div className="navbar-nav ml-auto">
             <li className="nav-item">
