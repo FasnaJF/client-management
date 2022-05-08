@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ClientCreateRequest;
 use App\Http\Requests\ClientUpdateRequest;
-use App\Models\Admin;
-use App\Models\Client;
 use App\Services\ClientService;
-use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
