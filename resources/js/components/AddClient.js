@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from 'react-hook-form';
+import { useNavigate, Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import ClientDataService from "../services/ClientService";
@@ -13,7 +14,7 @@ const AddClient = () => {
       .required('Email is required')
       .email('Email is invalid'),
     profile_picture: Yup.mixed()
-      .test('required', "You need to provide a file", (value) => {
+      .test('required', "You need to provide a image file", (value) => {
         return value && value.length
       })
       .test("fileSize", "The file is too large", (value, context) => {
@@ -40,6 +41,7 @@ const AddClient = () => {
   };
   const [client, setClient] = useState(initialClientState);
   const [submitted, setSubmitted] = useState(false);
+  let navigate = useNavigate();
 
   const [message, setMessage] = useState("");
 
@@ -57,6 +59,8 @@ const AddClient = () => {
     Object.keys(object).forEach(key => formData.append(key, object[key]));
     return formData;
   }
+
+
 
   const onSubmit = data => {
     setMessage("");
@@ -98,86 +102,89 @@ const AddClient = () => {
 
   return (
     <div>
-    { userData ? (
-      <div className="col-md-12">
-      <div className="card card-container">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {submitted ? (
-            <div>
-              <h4>You have created a client entry successfully!</h4>
-              <button className="btn btn-success" onClick={newClient}>
-                Add another client
-              </button>
-            </div>
-          ) : (
-            <div>
-              <div className="form-group">
-                <label htmlFor="first_name">First Name</label>
-                <input
-                  type="text"
-                  id="first_name"
-                  name="first_name"
-                  {...register('first_name')}
-                  className={`form-control ${errors.first_name ? 'is-invalid' : ''}`}
-                />
-                <div className="invalid-feedback">{errors.first_name?.message}</div>
-              </div>
-              <div className="form-group">
-                <label htmlFor="surname">Surname</label>
-                <input
-                  type="text"
-                  id="surname"
-                  name="surname"
-                  {...register('surname')}
-                  className={`form-control ${errors.surname ? 'is-invalid' : ''}`}
-                />
-                <div className="invalid-feedback">{errors.surname?.message}</div>
-              </div>
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  {...register('email')}
-                  className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                />
-                <div className="invalid-feedback">{errors.email?.message}</div>
-              </div>
-              <div className="form-group">
-                <label htmlFor="profile_picture">Profile Picture</label>
-                <input
-                  type="file"
-                  id="profile_picture"
-                  name="profile_picture"
-                  {...register('profile_picture')}
-                  className={`form-control ${errors.profile_picture ? 'is-invalid' : ''}`}
-                />
-                <div className="invalid-feedback">{errors.profile_picture?.message}</div>
-              </div>
-              <div className="form-group">
-                <button className="btn btn-primary btn-block">
-                  Submit
-                </button>
-              </div>
-            </div>
-          )}
-          {message && (
-            <div className="form-group">
-              <div className="alert alert-danger" role="alert">
-                {message}
-              </div>
-            </div>
-          )}
-        </form>
-      </div>
-    </div>
-    ) : (
-      <div>
+      {userData ? (
+        <div className="col-md-12">
+          <div className="card card-container">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              {submitted ? (
+                <div>
+                  <h4>You have created a client entry successfully!</h4>
+                  <button className="btn btn-success col-md-12 mb-2" onClick={newClient}>
+                    Add another client
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <div className="form-group">
+                    <label htmlFor="first_name">First Name</label>
+                    <input
+                      type="text"
+                      id="first_name"
+                      name="first_name"
+                      {...register('first_name')}
+                      className={`form-control ${errors.first_name ? 'is-invalid' : ''}`}
+                    />
+                    <div className="invalid-feedback">{errors.first_name?.message}</div>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="surname">Surname</label>
+                    <input
+                      type="text"
+                      id="surname"
+                      name="surname"
+                      {...register('surname')}
+                      className={`form-control ${errors.surname ? 'is-invalid' : ''}`}
+                    />
+                    <div className="invalid-feedback">{errors.surname?.message}</div>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="email">Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      {...register('email')}
+                      className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                    />
+                    <div className="invalid-feedback">{errors.email?.message}</div>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="profile_picture">Profile Picture</label>
+                    <input
+                      type="file"
+                      id="profile_picture"
+                      name="profile_picture"
+                      {...register('profile_picture')}
+                      className={`form-control ${errors.profile_picture ? 'is-invalid' : ''}`}
+                    />
+                    <div className="invalid-feedback">{errors.profile_picture?.message}</div>
+                  </div>
+                  <div className="form-group">
+                    <button className="btn btn-primary btn-block">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              )}
+              {message && (
+                <div className="form-group">
+                  <div className="alert alert-danger" role="alert">
+                    {message}
+                  </div>
+                </div>
+              )}
+            </form>
+            <Link className="btn btn-info" to='/dashboard'>
+              Go back to dashboard
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div>
           <br />
           <p>Please login to proceed..</p>
-      </div>
-  )}
+        </div>
+      )}
     </div>
   );
 };

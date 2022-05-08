@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Admin;
 use App\Models\Client;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,7 @@ class ClientUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return ($this->user()->can('create', Client::class) || $this->user()->can('update', Client::class));
+        return ($this->user()->can('create', Client::class) || $this->user()->can('update',Admin::class, Client::class));
     }
 
     /**
@@ -40,4 +41,6 @@ class ClientUpdateRequest extends FormRequest
             ],
         ];
     }
+
+  
 }

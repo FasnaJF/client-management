@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../../css/app.css";
 import AuthService from "../services/auth.service";
 import Login from "../components/Login";
 import Register from "../components/Register";
@@ -58,8 +56,8 @@ const App = () => {
       </nav>
       <div className="container mt-3">
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login user={currentUser}/>} />
+          <Route path="/register" element={<Register user={currentUser}/>} />
           <Route path="/dashboard" element={<ClientList />} />
           <Route path="/" element={<ClientList />} />
           <Route path="/add" element={<AddClient />} />

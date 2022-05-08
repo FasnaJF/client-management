@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -29,7 +29,6 @@ const Client = props => {
     });
 
     const { id } = useParams();
-    let navigate = useNavigate();
     const initialClientState = {
         id: null,
         first_name: "",
@@ -60,7 +59,7 @@ const Client = props => {
                 fields.forEach(field => setValue(field, client[field]));
             })
             .catch(e => {
-                console.log(e);
+                setMessage("There was a problem occured while loading client details!");
             });
     };
     useEffect(() => {
@@ -75,19 +74,19 @@ const Client = props => {
     const onSubmit = () => {
         ClientDataService.update(currentClient.id, currentClient)
             .then(response => {
-                console.log(response);
                 setMessage("The client was updated successfully!");
+
             })
             .catch(e => {
-                console.log(e);
+                setMessage("There was a problem submitting this form!");
             });
     };
-    
+
     const userData = JSON.parse(localStorage.getItem('user'));
 
     return (
         <div>
-            {currentClient && userData? (
+            {currentClient && userData ? (
                 <div className="edit-form">
                     <h4>Edit Client Details</h4>
                     <div className="col-md-12">
@@ -142,14 +141,23 @@ const Client = props => {
                                     <div className="invalid-feedback">{errors.profile_picture?.message}</div>
                                 </div>
                                 <button
-                                    className="btn btn-warning"
+                                    className="btn btn-warning col-md-12 mb-2"
                                 >
                                     Update Client Details
                                 </button>
                             </form>
+                            <Link className="btn btn-primary" to='/dashboard'>
+                                Cancel
+                            </Link>
                             <div>
                             </div>
-                            <p>{message}</p>
+                            {message && (
+                                <div className="form-group">
+                                    <div className="alert alert-info" role="alert">
+                                        {message}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

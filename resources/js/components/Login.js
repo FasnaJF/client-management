@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate} from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
 import AuthService from "../services/auth.service";
+import { object } from "prop-types";
 
 
-const Login = () => {
+const Login = (user) => {
 
+    if (user.user !== undefined) {
+        return <Navigate to="/dashboard"/>;
+    }
     const validationSchema = Yup.object().shape({
         email: Yup.string()
             .required('Email is required')
@@ -38,22 +42,22 @@ const Login = () => {
         AuthService.login(data).then(
             (response) => {
 
-                if(response.id){
+                if (response.id) {
                     navigate("/dashboard");
                     window.location.reload();
                 }
-              
+
                 const resMessage =
                     (response &&
-                       response.data &&
+                        response.data &&
                         response.data.message) ||
-                        response.message ||
-                        response.toString();
+                    response.message ||
+                    response.toString();
                 setLoading(false);
                 setMessage(resMessage);
             },
             (error) => {
-                console.log(error);
+
                 const resMessage =
                     (error.response &&
                         error.response.data &&
@@ -67,6 +71,7 @@ const Login = () => {
     };
     return (
         <div className="col-md-12">
+            <h4>Login</h4>
             <div className="card card-container">
                 <form onSubmit={handleSubmit(onSubmit)} >
                     <div className="form-group">

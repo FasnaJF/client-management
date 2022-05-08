@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -6,7 +7,12 @@ import AuthService from "../services/auth.service";
 import ReCAPTCHA from "react-google-recaptcha";
 
 
-const Register = () => {
+const Register = (user) => {
+
+
+  if (user.user !== undefined) {
+    return <Navigate to="/dashboard" />;
+  }
 
   const validationSchema = Yup.object().shape({
     first_name: Yup.string().required('First Name is required'),
@@ -71,6 +77,7 @@ const Register = () => {
 
   return (
     <div className="col-md-12">
+      <h4>Create your account</h4>
       <div className="card card-container">
         <form onSubmit={handleSubmit(onSubmit)} >
           {!successful && (

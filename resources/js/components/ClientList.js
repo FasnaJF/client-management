@@ -2,11 +2,12 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import ClientDataService from "../services/ClientService";
 import { useNavigate } from "react-router-dom";
 import { useTable } from "react-table";
+import AddClient from "./AddClient";
+import { string } from "prop-types";
 
 const ClientList = () => {
     const [clients, setClients] = useState([]);
-    const [currentClient, setCurrentClient] = useState(null);
-    const [currentIndex, setCurrentIndex] = useState(-1);
+    const [message, setMessage] = useState("");
     const clientsRef = useRef();
     clientsRef.current = clients;
     let navigate = useNavigate();
@@ -44,7 +45,7 @@ const ClientList = () => {
                     return (
                         <div>
                             <span onClick={() => openClient(rowIdx)}>
-                                <button className="btn btn-warning">Edit</button>
+                                <button className="btn btn-warning mr-2">Edit</button>
                             </span>
                             <span onClick={() => deleteClient(rowIdx)}>
                                 <button className="btn btn-danger">Delete</button>
@@ -56,6 +57,9 @@ const ClientList = () => {
         ],
         []
     );
+
+    let clientsData = !(clients === null || clients.length === 0 || typeof (clients) === 'string') ? clients : [];
+
     const {
         getTableProps,
         getTableBodyProps,
@@ -64,7 +68,7 @@ const ClientList = () => {
         prepareRow,
     } = useTable({
         columns,
-        data: clients,
+        data: clientsData,
     });
 
     useEffect(() => {
@@ -85,7 +89,7 @@ const ClientList = () => {
                 setClients(newClients);
             })
             .catch((e) => {
-                console.log(e);
+                setMessage('There is an issue while deleting this client!');
             });
     };
 
@@ -95,7 +99,7 @@ const ClientList = () => {
                 setClients(response.data);
             })
             .catch(e => {
-                console.log(e);
+                setMessage('There is an issue while fetching clients for this user!');
             });
     };
 
@@ -105,47 +109,62 @@ const ClientList = () => {
 
     return (
         <div>
-            {userData ?
-                (<div className="list row">
-                    <div className="col-md-12 list">
-                        <table
-                            className="table table-striped table-bordered"
-                            {...getTableProps()}
-                        >
-                            <thead>
-                                {headerGroups.map((headerGroup) => (
-                                    <tr {...headerGroup.getHeaderGroupProps()}>
-                                        {headerGroup.headers.map((column) => (
-                                            <th {...column.getHeaderProps()}>
-                                                {column.render("Header")}
-                                            </th>
+            {userData ? (
+                <div>
+                    <h4>Hi {userData.first_name}, welcome to your admin account</h4>
+                    {clientsData.length ?
+                        (<div className="list row">
+                            <div className="col-md-12 list">
+                                <table
+                                    className="table table-striped table-bordered"
+                                    {...getTableProps()}
+                                >
+                                    <thead>
+                                        {headerGroups.map((headerGroup) => (
+                                            <tr {...headerGroup.getHeaderGroupProps()}>
+                                                {headerGroup.headers.map((column) => (
+                                                    <th {...column.getHeaderProps()}>
+                                                        {column.render("Header")}
+                                                    </th>
+                                                ))}
+                                            </tr>
                                         ))}
-                                    </tr>
-                                ))}
-                            </thead>
-                            <tbody {...getTableBodyProps()}>
-                                {rows.map((row, i) => {
-                                    prepareRow(row);
-                                    return (
-                                        <tr {...row.getRowProps()}>
-                                            {row.cells.map((cell) => {
-                                                return (
-                                                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                                                );
-                                            })}
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
+                                    </thead>
+                                    <tbody {...getTableBodyProps()}>
+                                        {rows.map((row, i) => {
+                                            prepareRow(row);
+                                            return (
+                                                <tr {...row.getRowProps()}>
+                                                    {row.cells.map((cell) => {
+                                                        return (
+                                                            <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                                                        );
+                                                    })}
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        ) : (
+                            <div className="list row">
+                                <div className="col-md-12 list">
+                                    You don't have any clients data yet..
+                                    <span onClick={() => navigate('/add')}>
+                                        <button className="btn btn-warning">Add Client</button>
+                                    </span>
+                                </div>
+                            </div>
+                        )}
+                    <p>{message}</p>
                 </div>
-                ) : (
-                    <div>
-                        <br />
-                        <p>Please login to proceed..</p>
-                    </div>
-                )}
+            ) : (
+                <div>
+                    <br />
+                    <p>Please login to proceed..</p>
+                </div>
+            )}
         </div>
 
     );
