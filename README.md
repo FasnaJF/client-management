@@ -26,4 +26,3 @@ Project details:
 - A scheduler is available for weekly reporting to each admins with their client details
   ` php artisan schedule:work`
     mail is logged in default log file
-# assessment
