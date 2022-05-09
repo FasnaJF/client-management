@@ -6272,8 +6272,8 @@ var Login = function Login(user) {
       var resMessage = response && response.data && response.data.message || response.message || response.toString();
       setLoading(false);
       setMessage(resMessage);
-    }, function (error) {
-      var resMessage = error.response && error.response.data && error.response.data.message || error.message || error.toString();
+    })["catch"](function (error) {
+      var resMessage = error.response && error.response.data && error.response.data.errors || error.message || error.toString();
       setLoading(false);
       setMessage(resMessage);
     });
@@ -6439,8 +6439,8 @@ var Register = function Register(user) {
     _services_auth_service__WEBPACK_IMPORTED_MODULE_3__["default"].register(data).then(function (response) {
       setMessage('User Registered Successfully');
       setSuccessful(true);
-    }, function (error) {
-      var resMessage = error.response && error.response.data && error.response.data.message || error.message || error.toString();
+    })["catch"](function (error) {
+      var resMessage = error.response && error.response.data && error.response.data.errors || error.message || error.toString();
       setMessage(resMessage);
       setSuccessful(false);
     });

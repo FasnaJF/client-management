@@ -28,7 +28,7 @@ class AdminController extends BaseController
         $userDetails['password'] =  Hash::make($request->password);
 
         $user = $this->userService->createUser($userDetails);
-        return json_encode($user);
+        return response()->json($user);
     }
 
     public function loginUser(UserLoginRequest $request)
@@ -36,7 +36,7 @@ class AdminController extends BaseController
         $request->validated();
         $user = $this->userService->getUserByEmail($request->email);
         if (!$user) {
-            return json_encode('This email is not registered');
+            return response()->json('This email is not registered');
         }
 
         $credentials = $request->only(['email', 'password']);
@@ -44,10 +44,10 @@ class AdminController extends BaseController
         if (Auth::attempt($credentials)) {
             $userDetails['api_token'] = Str::random(60);
             $user = $this->userService->updateUserById($user->id, $userDetails);
-            return json_encode($user);
+            return response()->json($user);
         }
 
-        return json_encode('Credentials not matched any records');
+        return response()->json('Credentials not matched any records');
     }
 
     public function logout(Request $request)

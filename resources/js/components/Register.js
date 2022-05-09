@@ -52,21 +52,19 @@ const Register = (user) => {
 
     AuthService.register(data).then(
       (response) => {
-
         setMessage('User Registered Successfully');
         setSuccessful(true);
-      },
-      (error) => {
+      }).catch((error) => {
         const resMessage =
           (error.response &&
             error.response.data &&
-            error.response.data.message) ||
+            error.response.data.errors) ||
           error.message ||
           error.toString();
         setMessage(resMessage);
         setSuccessful(false);
       }
-    );
+      );
   };
 
   return (

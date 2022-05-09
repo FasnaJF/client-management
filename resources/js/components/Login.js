@@ -49,14 +49,13 @@ const Login = (user) => {
 
                 setLoading(false);
                 setMessage(resMessage);
-            },
-            (error) => {
+            }).catch((error) => {
                 const resMessage =
-                    (error.response &&
-                        error.response.data &&
-                        error.response.data.message) ||
-                    error.message ||
-                    error.toString();
+                  (error.response &&
+                    error.response.data &&
+                    error.response.data.errors) ||
+                  error.message ||
+                  error.toString();
                 setLoading(false);
                 setMessage(resMessage);
             }
