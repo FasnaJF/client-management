@@ -14,7 +14,6 @@ use Illuminate\Routing\Controller as BaseController;
 
 class AdminController extends BaseController
 {
-
     private $userService;
 
     public function __construct(UserService $userService)
@@ -25,7 +24,6 @@ class AdminController extends BaseController
 
     public function registerUser(UserRegisterRequest $request)
     {
-
         $userDetails = $request->validated();
         $userDetails['password'] =  Hash::make($request->password);
 
@@ -40,23 +38,21 @@ class AdminController extends BaseController
         if (!$user) {
             return json_encode('This email is not registered');
         }
-        $userDetails['api_token'] = Str::random(60);
-        $user = $this->userService->updateUserById($user->id, $userDetails);
 
-        $credentials = $request->except(['_token']);
+        $credentials = $request->only(['email', 'password']);
 
-        if(Auth::attempt($credentials)){
+        if (Auth::attempt($credentials)) {
+            $userDetails['api_token'] = Str::random(60);
+            $user = $this->userService->updateUserById($user->id, $userDetails);
             return json_encode($user);
         }
+
         return json_encode('Credentials not matched any records');
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
-
-        if ($request->wantsJson()) {
-            return response()->json([], 204);
-        }
+        return response()->json([], 204);
     }
 }

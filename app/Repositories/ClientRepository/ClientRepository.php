@@ -23,5 +23,4 @@ class ClientRepository extends BaseRepository implements ClientRepositoryInterfa
     public function getAllClientsByUserId($id){
         return $this->model->where('admin_id',$id)->get();
     }
-
 }

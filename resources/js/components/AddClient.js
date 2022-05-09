@@ -6,7 +6,6 @@ import * as Yup from 'yup';
 import ClientDataService from "../services/ClientService";
 
 const AddClient = () => {
-
   const validationSchema = Yup.object().shape({
     first_name: Yup.string().required('First Name is required'),
     surname: Yup.string().required('Surname is required'),
@@ -42,9 +41,7 @@ const AddClient = () => {
   const [client, setClient] = useState(initialClientState);
   const [submitted, setSubmitted] = useState(false);
   let navigate = useNavigate();
-
   const [message, setMessage] = useState("");
-
 
   const {
     register,
@@ -60,8 +57,6 @@ const AddClient = () => {
     return formData;
   }
 
-
-
   const onSubmit = data => {
     setMessage("");
     const userData = JSON.parse(localStorage.getItem('user'));
@@ -70,7 +65,6 @@ const AddClient = () => {
 
     ClientDataService.create(convertToFormData(data))
       .then((response) => {
-
         setClient({
           id: response.data.id,
           first_name: response.data.first_name,
@@ -89,7 +83,6 @@ const AddClient = () => {
           error.message ||
           error.toString();
         setMessage(resMessage);
-        setSuccessful(false);
       })
   };
 
@@ -107,11 +100,11 @@ const AddClient = () => {
           <div className="card card-container">
             <form onSubmit={handleSubmit(onSubmit)}>
               {submitted ? (
-                <div>
+                <div className="text-center">
                   <h4>You have created a client entry successfully!</h4>
-                  <button className="btn btn-success col-md-12 mb-2" onClick={newClient}>
-                    Add another client
-                  </button>
+                  <Link className="btn btn-info" to='/dashboard'>
+                    Go back to dashboard
+                  </Link>
                 </div>
               ) : (
                 <div>
@@ -174,9 +167,6 @@ const AddClient = () => {
                 </div>
               )}
             </form>
-            <Link className="btn btn-info" to='/dashboard'>
-              Go back to dashboard
-            </Link>
           </div>
         </div>
       ) : (

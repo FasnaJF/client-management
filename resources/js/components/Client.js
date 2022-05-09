@@ -4,9 +4,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import ClientDataService from "../services/ClientService";
-import { object } from "prop-types";
-const Client = props => {
 
+const Client = props => {
     const validationSchema = Yup.object().shape({
         first_name: Yup.string().required('First Name is required'),
         surname: Yup.string().required('Surname is required'),
@@ -40,7 +39,6 @@ const Client = props => {
     const [currentClient, setCurrentClient] = useState(initialClientState);
     const [message, setMessage] = useState("");
 
-
     const {
         register,
         handleSubmit,
@@ -58,14 +56,22 @@ const Client = props => {
                 const fields = ['first_name', 'surname', 'email', 'profile_picture'];
                 fields.forEach(field => setValue(field, client[field]));
             })
-            .catch(e => {
-                setMessage("There was a problem occured while loading client details!");
+            .catch((error) => {
+                const resMessage =
+                    (error.response &&
+                        error.response.data &&
+                        error.response.data.errors) ||
+                    error.message ||
+                    error.toString();
+                setMessage(resMessage);
             });
     };
+
     useEffect(() => {
         if (id)
             getClient(id);
     }, [id]);
+
     const handleInputChange = event => {
         const { name, value } = event.target;
         setCurrentClient({ ...currentClient, [name]: value });
@@ -75,10 +81,15 @@ const Client = props => {
         ClientDataService.update(currentClient.id, currentClient)
             .then(response => {
                 setMessage("The client was updated successfully!");
-
             })
-            .catch(e => {
-                setMessage("There was a problem submitting this form!");
+            .catch((error) => {
+                const resMessage =
+                    (error.response &&
+                        error.response.data &&
+                        error.response.data.errors) ||
+                    error.message ||
+                    error.toString();
+                setMessage(resMessage);
             });
     };
 
@@ -153,7 +164,7 @@ const Client = props => {
                             </div>
                             {message && (
                                 <div className="form-group">
-                                    <div className="alert alert-info" role="alert">
+                                    <div className="alert alert-dark" role="alert">
                                         {message}
                                     </div>
                                 </div>

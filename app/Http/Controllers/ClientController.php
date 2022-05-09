@@ -7,24 +7,19 @@ use App\Http\Requests\ClientUpdateRequest;
 use App\Services\ClientService;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Auth;
 
 class ClientController extends BaseController
 {
-
     private $clientService;
 
     public function __construct(ClientService $clientService)
     {
-        $this->middleware('admin');
         $this->clientService = $clientService;
     }
 
-
     public function index()
     {
-        $user = Auth::user();
-        $clients = $this->clientService->getAllClientsByUser($user->id);
+        $clients = $this->clientService->getAllClientsByUser(auth()->user()->id);
 
         if ($clients->count() == 0) {
             return response()->json("You don't have any clients yet");
@@ -43,33 +38,29 @@ class ClientController extends BaseController
 
     public function updateClient(ClientUpdateRequest $request)
     {
-        $user = Auth::user();
+        $clientDetails = $request->validated();
+
         $client = $this->clientService->getClientById($request->id);
 
-        if ($user->can('update', $client)) {
-            $clientDetails = $request->validated();
-
-            if ($request->hasFile('profile_picture')) {
-                $clientDetails['profile_picture']  = $this->imageUpload($request->profile_picture);
-            }
-
-            $client = $this->clientService->storeClient($clientDetails['id'], $clientDetails);
-
-            return response()->json($client);
+        if (!auth()->user()->can('update', $client)) {
+            return response()->json(['Unauthorized'])->setStatusCode(Response::HTTP_UNAUTHORIZED);
         }
-        return response()->json(['Unauthorized'])->setStatusCode(Response::HTTP_UNAUTHORIZED);
+
+        if ($request->hasFile('profile_picture')) {
+            $clientDetails['profile_picture']  = $this->imageUpload($request->profile_picture);
+        }
+        $client = $this->clientService->storeClient($clientDetails['id'], $clientDetails);
+        return response()->json($client);
     }
 
     public function deleteClient($id)
     {
-        $user = Auth::user();
         $client = $this->clientService->getClientById($id);
 
-        if ($user->can('delete', $client)) {
-            return response()->json($this->clientService->deleteClient($id));
+        if (!auth()->user()->can('delete', $client)) {
+            return response()->json(['Unauthorized'])->setStatusCode(Response::HTTP_UNAUTHORIZED);
         }
-
-        return response()->json(['Unauthorized'])->setStatusCode(Response::HTTP_UNAUTHORIZED);
+        return response()->json($this->clientService->deleteClient($id));
     }
 
     public function getClient($id)
@@ -81,7 +72,6 @@ class ClientController extends BaseController
     {
         $filename = time() . rand(5, 5) . '.' . $image->getClientOriginalExtension();
         $image->move('images/', $filename);
-
         return $filename;
     }
 }

@@ -8,18 +8,13 @@ use App\Repositories\UserRepository\UserRepository;
 use App\Repositories\UserRepository\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
-
 class RepositoryServiceProvider extends ServiceProvider
 {
     private $repositories = [
         UserRepositoryInterface::class => UserRepository::class,
         ClientRepositoryInterface::class => ClientRepository::class,
     ];
-    /**
-     * Register services.
-     *
-     * @return void
-     */
+   
     public function register()
     {
         foreach ($this->repositories as $contracts => $eloquentClass) {
@@ -30,11 +25,6 @@ class RepositoryServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
     public function boot()
     {
         //

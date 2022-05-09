@@ -14,12 +14,15 @@ const login = async (data) => {
   }
   return response.data;
 };
+
 const logout = () => {
   localStorage.removeItem("user");
+  return axios.post(API_URL + "signout");
 };
 const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("user"));
 };
+
 const AuthService = {
   register,
   login,

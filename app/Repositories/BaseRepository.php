@@ -4,16 +4,11 @@
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
 
 abstract class BaseRepository
 {
-
     protected $model;
-    /**
-     * BaseRepository constructor.
-     * @param Model $model
-     */
+
     public function __construct(Model $model)
     {
         $this->model = $model;
@@ -33,41 +28,32 @@ abstract class BaseRepository
 
     public function getAll($sortBy = null)
     {
-
         if (isset($sortBy) && !empty($sortBy)) {
-
             return $this->model->all()->sortBy($sortBy);
         }
-
         return $this->model->all();
     }
 
     public function getCountAll()
     {
-
         return $this->model->count();
     }
 
     public function deleteById($id)
     {
-
         return $this->model->destroy($id);
     }
 
     public function updateById($id, array $params)
     {
-
         $this->model->find($id)->update($params);
-
         return $this->getById($id);
     }
-
 
     public function getModel(): Model
     {
         return $this->model;
     }
-
 
     public function with($relations)
     {

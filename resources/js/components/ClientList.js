@@ -2,8 +2,6 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import ClientDataService from "../services/ClientService";
 import { useNavigate } from "react-router-dom";
 import { useTable } from "react-table";
-import AddClient from "./AddClient";
-import { string } from "prop-types";
 
 const ClientList = () => {
     const [clients, setClients] = useState([]);
@@ -79,6 +77,7 @@ const ClientList = () => {
         const id = clientsRef.current[rowIndex].id;
         navigate("/clients/" + id);
     };
+
     const deleteClient = (rowIndex) => {
         const id = clientsRef.current[rowIndex].id;
         ClientDataService.remove(id)
@@ -103,9 +102,7 @@ const ClientList = () => {
             });
     };
 
-
     const userData = JSON.parse(localStorage.getItem('user'));
-
 
     return (
         <div>
@@ -166,7 +163,6 @@ const ClientList = () => {
                 </div>
             )}
         </div>
-
     );
 };
 export default ClientList;

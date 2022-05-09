@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate, Navigate} from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-
 import AuthService from "../services/auth.service";
-import { object } from "prop-types";
-
 
 const Login = (user) => {
-
     if (user.user !== undefined) {
-        return <Navigate to="/dashboard"/>;
+        return <Navigate to="/dashboard" />;
     }
+
+    let navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState("");
+
     const validationSchema = Yup.object().shape({
         email: Yup.string()
             .required('Email is required')
@@ -20,11 +21,6 @@ const Login = (user) => {
         password: Yup.string()
             .required('Password is required')
     });
-
-
-    let navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
 
     const {
         register,
@@ -35,29 +31,26 @@ const Login = (user) => {
     });
 
     const onSubmit = (data) => {
-
         setMessage("");
         setLoading(true);
 
         AuthService.login(data).then(
             (response) => {
-
                 if (response.id) {
                     navigate("/dashboard");
                     window.location.reload();
                 }
-
                 const resMessage =
                     (response &&
                         response.data &&
                         response.data.message) ||
                     response.message ||
                     response.toString();
+
                 setLoading(false);
                 setMessage(resMessage);
             },
             (error) => {
-
                 const resMessage =
                     (error.response &&
                         error.response.data &&
@@ -69,6 +62,7 @@ const Login = (user) => {
             }
         );
     };
+
     return (
         <div className="col-md-12">
             <h4>Login</h4>

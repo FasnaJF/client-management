@@ -8,17 +8,19 @@ import ClientList from "../components/ClientList";
 import AddClient from "../components/AddClient";
 
 const App = () => {
-
   const [currentUser, setCurrentUser] = useState(undefined);
+
   useEffect(() => {
     const user = AuthService.getCurrentUser();
     if (user) {
       setCurrentUser(user);
     }
   }, []);
+
   const logout = () => {
     AuthService.logout();
   };
+
   return (
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-primary">
@@ -56,8 +58,8 @@ const App = () => {
       </nav>
       <div className="container mt-3">
         <Routes>
-          <Route path="/login" element={<Login user={currentUser}/>} />
-          <Route path="/register" element={<Register user={currentUser}/>} />
+          <Route path="/login" element={<Login user={currentUser} />} />
+          <Route path="/register" element={<Register user={currentUser} />} />
           <Route path="/dashboard" element={<ClientList />} />
           <Route path="/" element={<ClientList />} />
           <Route path="/add" element={<AddClient />} />

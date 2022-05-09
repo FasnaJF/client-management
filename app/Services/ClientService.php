@@ -1,13 +1,11 @@
 <?php
 
-
 namespace App\Services;
 
 use App\Repositories\ClientRepository\ClientRepositoryInterface;
 
 class ClientService
 {
-
     private $clientRepo;
 
     public function __construct(ClientRepositoryInterface $clientRepo)

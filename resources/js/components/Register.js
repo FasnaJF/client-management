@@ -6,10 +6,7 @@ import * as Yup from 'yup';
 import AuthService from "../services/auth.service";
 import ReCAPTCHA from "react-google-recaptcha";
 
-
 const Register = (user) => {
-
-
   if (user.user !== undefined) {
     return <Navigate to="/dashboard" />;
   }
@@ -36,7 +33,6 @@ const Register = (user) => {
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
 
-
   const {
     register,
     handleSubmit,
@@ -51,7 +47,6 @@ const Register = (user) => {
   };
 
   const onSubmit = data => {
-
     setMessage("");
     setSuccessful(false);
 
@@ -73,7 +68,6 @@ const Register = (user) => {
       }
     );
   };
-
 
   return (
     <div className="col-md-12">

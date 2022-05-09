@@ -1,13 +1,11 @@
 <?php
 
-
 namespace App\Services;
 
 use App\Repositories\UserRepository\UserRepositoryInterface;
 
 class UserService
 {
-
     private $userRepo;
 
     public function __construct(UserRepositoryInterface $userRepo)
@@ -34,5 +32,4 @@ class UserService
 
         return $this->userRepo->updateById($id,$collection);
     }
-
 }
